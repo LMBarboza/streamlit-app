@@ -2,49 +2,49 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from PIL import Image
 
 st.set_page_config(page_title='Análise de Dívidas Municipais', layout='wide')
 
 df = pd.read_csv('./data/MunicipalDebtAnalysis.csv')
 
-sidebar_options = ['Análise Exploratória', 'Colunas', 'Correlação']
-sidebar_selection = st.sidebar.radio('Escolha uma opção:', sidebar_options)
 
-if sidebar_selection == 'Análise Exploratória':
-    st.title('Análise Exploratória')
-    st.write("Para este estudo, \
-         foi utilizada uma base de dados de dívidas municipais de \
-         8 cidades Sul-Africanas, disponível no site Kaggle.")
-    st.write(df.head())
+sidebar_options = ['Introdução', 'Análise Exploratória', 'Modelos']
+sidebar_selection = st.sidebar.radio('', sidebar_options)
 
-    # Show the distribution of numerical columns
-    st.subheader('Distribuição das colunas numéricas')
-    num_cols = df.select_dtypes(include=['int64', 'float64']).columns.tolist()
-    for col in num_cols:
-        fig, ax = plt.subplots()
-        sns.histplot(df[col], ax=ax)
-        st.pyplot(fig)
+if sidebar_selection == 'Introdução':
+    st.title('Análise de Dívidas Municipais')
+    st.header('Objetivos e motivação')
+    st.write('A análise exploratória de dados (AED) é uma técnica utilizada para entender\
+            melhor um conjunto de dados, identificando padrões, tendências e relações entre\
+            as variáveis do conjunto de dados. A AED ajuda\
+            a explorar as informações contidas nos dados e a obter insights\
+            valiosos que podem ser usados para tomar decisões informadas.\
+            Neste contexto, realizamos uma AED em um conjunto de dados referentes à cobrança de dívida de 8 municipalidades\
+            sul-africanas. O objetivo principal desta análise foi identificar os principais padrões e tendências nos dados.')
+    st.header('Detalhes do conjunto de dados')
+    st.write('A base usada para essa análise poder ser encontrada no site Kaggle\
+            (https://www.kaggle.com/datasets/dmsconsultingsa/municipal-debt-risk-analysis). Ela contém informações\
+            sobre os devedores, como, tipo de propriedade, valor e tamanho da propriedade e sobre a dívida, valor total\
+            \
+            ,total recebido, entre outras. Além disso, há uma classificação binária entre boas e más dívidas.')
 
-# Columns page
-elif sidebar_selection == 'Colunas':
-    st.title('Colunas')
-
-    # Column selection
+elif sidebar_selection == 'Análise Exploratória':
+    st.title('Análise Exploratória de Dados')
+#explicar cada coluna, numero de dados, dados com registro, dados com classificação, média e outras coisas 
+#de colunas que façam sentido, gráficos e matriz de correlação 
     col_options = df.columns.tolist()
     col_selection = st.selectbox('Select a column:', col_options)
 
-    # Show column statistics
     st.subheader(f'Estatísticas de cada coluna {col_selection}')
     st.write(df[col_selection].describe())
-
-    # Show a histogram of the column
     fig, ax = plt.subplots()
     sns.histplot(df[col_selection], ax=ax)
     st.pyplot(fig)
 
 # Correlation page
-elif sidebar_selection == 'Correlação':
-    st.title('Análise de Correlação')
+elif sidebar_selection == 'Modelos':
+    st.title('Modelos de classificação')
 
     # Correlation matrix
     corr = df.corr()
